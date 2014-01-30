@@ -5,21 +5,24 @@ public class Jeu {
 	public static void main(String[] args) {
 		boolean finJeu = false;
 		boolean finTour = false;
+		int compteurPiece = 0;
+
 		Jeu jeu = new Jeu();
 		Grille g = new Grille();
 
-		g.setPieceCourante(g.nouvellePiece());
-		System.out.println("");
-		g.affichePiece();
-		jeu.dessinerGrille(g);
+		premierTour(g);
 
-		while (!finTour) {
+		while (!finJeu) {
+			descentePiece(g);
+			finJeu = controleFinJeu(g);
+			nouveauTour(g);
 
-			g.deplaceBas();
-			jeu.dessinerGrille(g);
-			finTour = (g.bloqueBas());
-
+			// compteurPiece++;
 		}
+
+		System.out.println("");
+
+		descentePiece(g);
 
 		System.out.println("Fin de partie");
 	}
@@ -30,17 +33,37 @@ public class Jeu {
 		niveau = 0;
 	}
 
-	public void dessinerGrille(Grille g) {
+	public static void nouveauTour(Grille g) {
+		g.setPieceCourante(g.getPieceSuivante());
+		g.setPieceSuivante(g.nouvellePiece());
+		g.affichePiece();
+		g.dessinerGrille();
+	}
 
-		for (int i = 0; i < Grille.HAUTEUR_GRILLE; i++) {
-			System.out.println("______________________________");
-			for (int j = 0; j < Grille.LARGEUR_GRILLE; j++) {
-				System.out.print("|" + g.getGrille()[i][j] + "|");
+	public static void descentePiece(Grille g) {
+		boolean finTour = false;
+		while (!finTour) {
 
-			}
-			System.out.print("\n");
-
+			finTour = g.deplaceBas();
+			g.dessinerGrille();
 		}
-		System.out.println("+++++++++++++++++++++++++++++++");
+	}
+
+	public static void premierTour(Grille g) {
+		g.setPieceCourante(g.nouvellePiece());
+		g.setPieceSuivante(g.nouvellePiece());
+		System.out.println("");
+		g.affichePiece();
+		g.dessinerGrille();
+	}
+
+	public static boolean controleFinJeu(Grille g) {
+		boolean finJeu = false;
+		int[][] grilleDuJeu = g.getGrille();
+		for (int j = 0; j < grilleDuJeu[0].length; j++) {
+			if (grilleDuJeu[0][j] != 0)
+				finJeu = true;
+		}
+		return finJeu;
 	}
 }

@@ -34,11 +34,16 @@ public class Grille {
 		int x, y;
 		x = pieceCourante.getCol();
 		y = pieceCourante.getLig();
+		int[][] piece = pieceCourante.recupererPiece();
 
 		for (int i = y; i < y + 4; i++) {
 			for (int j = x; j < x + 4; j++) {
-				if (i < 20)
-					grille[i][j] = 0;
+				if (i < 20) {
+					if (piece[i - y][j - x] != 0) {
+						grille[i][j] = 0;
+					}
+				}
+
 			}
 		}
 	}
@@ -52,8 +57,9 @@ public class Grille {
 		for (int i = y; i < y + 4; i++) {
 			for (int j = x; j < x + 4; j++) {
 				if (i < 20) {
-					if (piece[i - y][j - x] != 0)
+					if (piece[i - y][j - x] != 0) {
 						grille[i][j] = piece[i - y][j - x];
+					}
 				}
 			}
 		}
@@ -82,27 +88,32 @@ public class Grille {
 			for (int l = 0; l < 4; l++) {
 
 				if (piece[k][l] != 0) {
-					if ((grille[i + k + 1][j] != 0) || (i + k + 1 == 19)) {
+					if (i + k + 1 < 20) {
+						if (grille[i + k + 1][j + l] != 0) {
+							bloque = true;
+						}
+
+					} else
 						bloque = true;
-					}
 
 				}
 			}
-
 		}
-
+		// affichePiece();
 		return bloque;
 	}
 
-	public void deplaceBas() {
-		System.out.println(pieceCourante.getLig() + " "
-				+ pieceCourante.getCol());
-
+	public boolean deplaceBas() {
+		boolean finDeplacement = false;
 		effacePiece();
+
 		if (!bloqueBas()) {
 			pieceCourante.setLig(pieceCourante.getLig() + 1);
-		}
+		} else
+			finDeplacement = true;
+
 		affichePiece();
+		return finDeplacement;
 	}
 
 	public Piece getPieceCourante() {
@@ -111,6 +122,28 @@ public class Grille {
 
 	public void setPieceCourante(Piece pieceCourante) {
 		this.pieceCourante = pieceCourante;
+	}
+
+	public void dessinerGrille() {
+
+		for (int i = 0; i < Grille.HAUTEUR_GRILLE; i++) {
+			System.out.println("______________________________");
+			for (int j = 0; j < Grille.LARGEUR_GRILLE; j++) {
+				System.out.print("|" + this.getGrille()[i][j] + "|");
+
+			}
+			System.out.print("\n");
+
+		}
+		System.out.println("+++++++++++++++++++++++++++++++");
+	}
+
+	public Piece getPieceSuivante() {
+		return pieceSuivante;
+	}
+
+	public void setPieceSuivante(Piece pieceSuivante) {
+		this.pieceSuivante = pieceSuivante;
 	}
 
 }
