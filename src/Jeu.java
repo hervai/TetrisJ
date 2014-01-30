@@ -14,6 +14,7 @@ public class Jeu {
 
 		while (!finJeu) {
 			descentePiece(g);
+
 			finJeu = controleFinJeu(g);
 			nouveauTour(g);
 
@@ -43,7 +44,7 @@ public class Jeu {
 	public static void descentePiece(Grille g) {
 		boolean finTour = false;
 		while (!finTour) {
-
+			g.deplaceDroite();
 			finTour = g.deplaceBas();
 			g.dessinerGrille();
 		}

@@ -65,16 +65,54 @@ public class Grille {
 		}
 	}
 
-	public boolean bloqueDroite() {
-		boolean b = false;
-		// A CODER
-		return b;
+	public boolean bloqueGauche() {
+		int i = pieceCourante.getLig();
+		int j = pieceCourante.getCol();
+		int[][] piece = new int[4][4];
+		piece = pieceCourante.recupererPiece();
+		boolean bloque = false;
 
+		for (int k = 0; k < 4; k++) {
+			for (int l = 0; l < 4; l++) {
+
+				if (piece[k][l] != 0) {
+					if (j + l - 1 >= 0) {
+						if (grille[i + k][j + l - 1] != 0) {
+							bloque = true;
+						}
+
+					} else
+						bloque = true;
+
+				}
+			}
+		}
+		return bloque;
 	}
 
-	public boolean bloqueGauche() {
-		// A CODER
-		return false;
+	public boolean bloqueDroite() {
+		int i = pieceCourante.getLig();
+		int j = pieceCourante.getCol();
+		int[][] piece = new int[4][4];
+		piece = pieceCourante.recupererPiece();
+		boolean bloque = false;
+
+		for (int k = 0; k < 4; k++) {
+			for (int l = 0; l < 4; l++) {
+
+				if (piece[k][l] != 0) {
+					if (j + l + 1 < grille[0].length) {
+						if (grille[i + k][j + l + 1] != 0) {
+							bloque = true;
+						}
+
+					} else
+						bloque = true;
+
+				}
+			}
+		}
+		return bloque;
 	}
 
 	public boolean bloqueBas() {
@@ -99,21 +137,46 @@ public class Grille {
 				}
 			}
 		}
-		// affichePiece();
 		return bloque;
 	}
 
 	public boolean deplaceBas() {
-		boolean finDeplacement = false;
+		boolean pieceBloquee = false;
 		effacePiece();
 
 		if (!bloqueBas()) {
 			pieceCourante.setLig(pieceCourante.getLig() + 1);
 		} else
-			finDeplacement = true;
+			pieceBloquee = true;
 
 		affichePiece();
-		return finDeplacement;
+		return pieceBloquee;
+	}
+
+	public boolean deplaceGauche() {
+		boolean pieceBloquee = false;
+		effacePiece();
+
+		if (!bloqueGauche()) {
+			pieceCourante.setCol(pieceCourante.getCol() - 1);
+		} else
+			pieceBloquee = true;
+
+		affichePiece();
+		return pieceBloquee;
+	}
+
+	public boolean deplaceDroite() {
+		boolean pieceBloquee = false;
+		effacePiece();
+
+		if (!bloqueDroite()) {
+			pieceCourante.setCol(pieceCourante.getCol() + 1);
+		} else
+			pieceBloquee = true;
+
+		affichePiece();
+		return pieceBloquee;
 	}
 
 	public Piece getPieceCourante() {
@@ -144,6 +207,22 @@ public class Grille {
 
 	public void setPieceSuivante(Piece pieceSuivante) {
 		this.pieceSuivante = pieceSuivante;
+	}
+
+	public void tournerPiece() {
+
+		if (!bloqueRotation()) {
+			if (pieceCourante.getSens() < 3)
+				pieceCourante.setSens(pieceCourante.getSens() + 1);
+			else
+				pieceCourante.setSens(0);
+		}
+
+	}
+
+	public boolean bloqueRotation() {
+		// A CODER
+		return false;
 	}
 
 }

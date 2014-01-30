@@ -89,13 +89,7 @@ public class Piece {
 		this.lig = lig;
 	}
 
-	public void tournerPiece() {
 
-		if (sens < 3)
-			sens++;
-		else
-			sens = 0;
-	}
 
 	public Piece copiePiece(Piece p) {
 		Piece copie = new Piece(p);
