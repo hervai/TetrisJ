@@ -29,12 +29,13 @@ public class Piece {
 		this.sens = p.getSens();
 		this.col = p.getCol();
 		this.lig = p.getLig();
+		this.dessin = p.getDessin();
 
 	}
 
 	public int[][] recupererPiece() {
 		int type, sens;
-		int[][] resultat=null;
+		int[][] resultat = null;
 		type = this.getType();
 		sens = this.getSens();
 
@@ -58,8 +59,16 @@ public class Piece {
 		return sens;
 	}
 
-	public void setSens(int r) {
-		sens = r;
+	public void setSens(int sens) {
+		this.sens = sens;
+	}
+
+	public void setDessin(int[][] dessin) {
+		this.dessin = dessin;
+	}
+
+	public int[][] getDessin() {
+		return dessin;
 	}
 
 	public int getCol() {
@@ -86,6 +95,12 @@ public class Piece {
 			sens++;
 		else
 			sens = 0;
+	}
+
+	public Piece copiePiece(Piece p) {
+		Piece copie = new Piece(p);
+
+		return copie;
 	}
 
 	public void dessinerPiece() {

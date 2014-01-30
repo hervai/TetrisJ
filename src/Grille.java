@@ -6,8 +6,8 @@ public class Grille {
 	public static final int LIG_APPARITION = 0;
 
 	private int[][] grille;
-	public static Piece piececourante = new Piece(); // pièce courante
-	public static Piece pieceSuivante = new Piece(); // pièce suivante
+	private Piece pieceCourante = new Piece(); // pièce courante
+	private Piece pieceSuivante = new Piece(); // pièce suivante
 
 	public Grille() {
 		grille = new int[HAUTEUR_GRILLE][LARGEUR_GRILLE];
@@ -23,18 +23,17 @@ public class Grille {
 
 	public Piece nouvellePiece() {
 
-		int typePiece = (int) ((Math.random() - 0.00001) * 7);
+		int typePiece = Math.round((float) Math.random() * 6);
 		Piece p = new Piece(typePiece);
 		p.setCol(COL_APPARITION);
 		p.setLig(LIG_APPARITION);
-
 		return p;
 	}
 
-	public void effacePiece(Piece p) {
+	public void effacePiece() {
 		int x, y;
-		x = p.getCol();
-		y = p.getLig();
+		x = pieceCourante.getCol();
+		y = pieceCourante.getLig();
 
 		for (int i = y; i < y + 4; i++) {
 			for (int j = x; j < x + 4; j++) {
@@ -44,11 +43,11 @@ public class Grille {
 		}
 	}
 
-	public void affichePiece(Piece p) {
+	public void affichePiece() {
 		int x, y;
-		x = p.getCol();
-		y = p.getLig();
-		int[][] piece = p.recupererPiece();
+		x = pieceCourante.getCol();
+		y = pieceCourante.getLig();
+		int[][] piece = pieceCourante.recupererPiece();
 
 		for (int i = y; i < y + 4; i++) {
 			for (int j = x; j < x + 4; j++) {
@@ -60,44 +59,43 @@ public class Grille {
 		}
 	}
 
-	public boolean bloqueDroite(Piece p) {
+	public boolean bloqueDroite() {
 		boolean b = false;
-
+		// A CODER
 		return b;
 
 	}
 
-	public boolean bloqueGauche(Piece p) {
-
+	public boolean bloqueGauche() {
+		// A CODER
 		return false;
 	}
 
-	public boolean bloqueBas(Piece p) {
-		int x = p.getCol();
-		int y = p.getLig();
+	public boolean bloqueBas() {
+		int x = pieceCourante.getCol();
+		int y = pieceCourante.getLig();
 		boolean bloque = false;
 
-		System.out.println("X : " + x + " Y : " + y);
-		if ((y + 4) < 20) {
-			if (grille[y + 1][x] != 0)
-				bloque = true;
-		} else {
-			System.out.println("bloque else");
-			bloque = true;
-
-		}
 		return bloque;
 	}
 
-	public void deplaceBas(Piece p) {
+	public void deplaceBas() {
 
-		effacePiece(p);
-		if (!bloqueBas(p)) {
+		effacePiece();
+		if (!bloqueBas()) {
 			// if (p.getY() < 19) {
-			p.setLig(p.getLig() + 1);
+			pieceCourante.setLig(pieceCourante.getLig() + 1);
 			// }
 		}
-		affichePiece(p);
+		affichePiece();
+	}
+
+	public Piece getPieceCourante() {
+		return pieceCourante;
+	}
+
+	public void setPieceCourante(Piece pieceCourante) {
+		this.pieceCourante = pieceCourante;
 	}
 
 }
