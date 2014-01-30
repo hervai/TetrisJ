@@ -72,20 +72,35 @@ public class Grille {
 	}
 
 	public boolean bloqueBas() {
-		int x = pieceCourante.getCol();
-		int y = pieceCourante.getLig();
+		int i = pieceCourante.getLig();
+		int j = pieceCourante.getCol();
+		int[][] piece = new int[4][4];
+		piece = pieceCourante.recupererPiece();
 		boolean bloque = false;
+
+		for (int k = 0; k < 4; k++) {
+			for (int l = 0; l < 4; l++) {
+
+				if (piece[k][l] != 0) {
+					if ((grille[i + k + 1][j] != 0) || (i + k + 1 == 19)) {
+						bloque = true;
+					}
+
+				}
+			}
+
+		}
 
 		return bloque;
 	}
 
 	public void deplaceBas() {
+		System.out.println(pieceCourante.getLig() + " "
+				+ pieceCourante.getCol());
 
 		effacePiece();
 		if (!bloqueBas()) {
-			// if (p.getY() < 19) {
 			pieceCourante.setLig(pieceCourante.getLig() + 1);
-			// }
 		}
 		affichePiece();
 	}

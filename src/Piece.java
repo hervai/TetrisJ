@@ -35,13 +35,13 @@ public class Piece {
 
 	public int[][] recupererPiece() {
 		int type, sens;
-		int[][] resultat = null;
+		int[][] resultat = new int[4][4];
 		type = this.getType();
 		sens = this.getSens();
 
-		for (int i = 0; i < FabriquePiece.PIECES[sens][type].length; i++) {
-			for (int j = 0; j < FabriquePiece.PIECES[sens][type][0].length; j++) {
-				resultat[i][j] = FabriquePiece.PIECES[sens][type][i][j];
+		for (int k = 0; k < FabriquePiece.PIECES[type][sens].length; k++) {
+			for (int l = 0; l < FabriquePiece.PIECES[type][sens][0].length; l++) {
+				resultat[k][l] = FabriquePiece.PIECES[type][sens][k][l];
 			}
 		}
 		return resultat;

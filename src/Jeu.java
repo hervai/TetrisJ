@@ -4,36 +4,22 @@ public class Jeu {
 
 	public static void main(String[] args) {
 		boolean finJeu = false;
-
+		boolean finTour = false;
 		Jeu jeu = new Jeu();
 		Grille g = new Grille();
-		FabriquePiece fp = new FabriquePiece();
+
 		g.setPieceCourante(g.nouvellePiece());
-		
-		
 		System.out.println("");
 		g.affichePiece();
 		jeu.dessinerGrille(g);
 
-		while (!finJeu) {
+		while (!finTour) {
 
 			g.deplaceBas();
 			jeu.dessinerGrille(g);
-			finJeu = (g.bloqueBas());
+			finTour = (g.bloqueBas());
+
 		}
-
-	/*	pc = g.nouvellePiece();
-		System.out.println("");
-		g.majPieceCourante(pc);
-		g.affichePiece(pc);
-		jeu.dessinerGrille(g);
-		fin = false;
-		while (!fin) {
-
-			g.deplaceBas(pc);
-			jeu.dessinerGrille(g);
-			fin = (g.bloqueBas(pc));
-		}*/
 
 		System.out.println("Fin de partie");
 	}
