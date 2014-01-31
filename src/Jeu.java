@@ -1,56 +1,43 @@
-public class Jeu {
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+public class Jeu extends Thread implements KeyListener {
 
 	private int score, niveau, lignes;
-
-	public static void main(String[] args) {
-		boolean finJeu = false;
-		boolean finTour = false;
-		int compteurPiece = 0;
-
-		Jeu jeu = new Jeu();
-		Grille g = new Grille();
-
-		premierTour(g);
-
-		while (!finJeu) {
-			descentePiece(g);
-
-			finJeu = controleFinJeu(g);
-			nouveauTour(g);
-
-			// compteurPiece++;
-		}
-
-		System.out.println("");
-
-		descentePiece(g);
-
-		System.out.println("Fin de partie");
-	}
+	private boolean finJeu;
+	private Grille g;
 
 	public Jeu() {
 		score = 0;
 		lignes = 0;
 		niveau = 0;
+		finJeu = false;
+		g = new Grille();
+		this.start();
+
 	}
 
-	public static void nouveauTour(Grille g) {
+	public void nouveauTour(Grille g) {
 		g.setPieceCourante(g.getPieceSuivante());
 		g.setPieceSuivante(g.nouvellePiece());
 		g.affichePiece();
 		g.dessinerGrille();
 	}
 
-	public static void descentePiece(Grille g) {
-		boolean finTour = false;
-		while (!finTour) {
-			g.deplaceDroite();
-			finTour = g.deplaceBas();
-			g.dessinerGrille();
-		}
+	public void descentePiece(Grille g) {
+		boolean finDeplacement = false;
+		finDeplacement = (g.deplaceBas());
+
+		if (finDeplacement)
+			if (g.nouvellePiecePossible(g.getPieceSuivante())) {
+				g.setPieceCourante(g.getPieceSuivante());
+				g.setPieceSuivante(g.nouvellePiece());
+			} else
+				setFinJeu(true);
+		g.dessinerGrille();
 	}
 
-	public static void premierTour(Grille g) {
+	public void premierTour(Grille g) {
 		g.setPieceCourante(g.nouvellePiece());
 		g.setPieceSuivante(g.nouvellePiece());
 		System.out.println("");
@@ -58,13 +45,52 @@ public class Jeu {
 		g.dessinerGrille();
 	}
 
-	public static boolean controleFinJeu(Grille g) {
-		boolean finJeu = false;
+	public boolean controleFinJeu(Grille g) {
 		int[][] grilleDuJeu = g.getGrille();
 		for (int j = 0; j < grilleDuJeu[0].length; j++) {
 			if (grilleDuJeu[0][j] != 0)
-				finJeu = true;
+				setFinJeu(true);
 		}
 		return finJeu;
+	}
+
+	public void setFinJeu(boolean fin) {
+		finJeu = fin;
+	}
+
+	public boolean getFinjeu() {
+		return finJeu;
+	}
+
+	public void run() {
+		while ((Thread.currentThread() == this) && (!this.isInterrupted())
+				&& (!finJeu)) {
+			descentePiece(g);
+			try {
+				Thread.sleep(200 - (niveau * 150));
+			} catch (InterruptedException e) {
+				return;
+			}
+
+		}
+
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 }
