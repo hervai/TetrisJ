@@ -216,10 +216,13 @@ public class Grille {
 
 		if (!bloqueBas()) {
 			pieceCourante.setLig(pieceCourante.getLig() + 1);
-		} else
+		} else {
 			finDeplacement = true;
+			scoreLigne(Grille.HAUTEUR_GRILLE);
+		}
 
 		affichePiece();
+
 		return finDeplacement;
 	}
 
@@ -285,4 +288,18 @@ public class Grille {
 		return npPossible;
 	}
 
+	public boolean scoreLigne(int numLigne){
+		boolean supprLigne=true;
+		int[][] grille=this.getGrille();
+		int ligne=numLigne;
+		
+		for(int j=0;j<Grille.LARGEUR_GRILLE;j++){
+			if(grille[ligne][j]==0) supprLigne=false;
+		}
+		
+		
+		if(supprLigne) this.scoreLigne(ligne-1);
+		
+		return supprLigne;
+	}
 }

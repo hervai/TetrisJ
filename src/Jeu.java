@@ -1,4 +1,3 @@
-
 public class Jeu implements Runnable {
 
 	private int score, niveau, lignes;
@@ -30,7 +29,8 @@ public class Jeu implements Runnable {
 				g.setPieceCourante(g.getPieceSuivante());
 				g.setPieceSuivante(g.nouvellePiece());
 			} else
-				setFinJeu(true);
+				setFinJeu(this.controleFinJeu(g));
+
 		g.dessinerGrille();
 	}
 
@@ -63,7 +63,7 @@ public class Jeu implements Runnable {
 		while (!finJeu) {
 			descentePiece(g);
 			try {
-				Thread.sleep(1000 - (niveau * 150));
+				Thread.sleep(100 - (niveau * 150));
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				break;
@@ -71,6 +71,5 @@ public class Jeu implements Runnable {
 		}
 		System.out.println("Game over");
 	}
-	
-	
+
 }
