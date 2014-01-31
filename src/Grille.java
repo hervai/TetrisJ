@@ -288,18 +288,33 @@ public class Grille {
 		return npPossible;
 	}
 
-	public boolean scoreLigne(int numLigne){
-		boolean supprLigne=true;
-		int[][] grille=this.getGrille();
-		int ligne=numLigne;
-		
-		for(int j=0;j<Grille.LARGEUR_GRILLE;j++){
-			if(grille[ligne][j]==0) supprLigne=false;
+	public boolean scoreLigne(int numLigne) {
+		boolean supprLigne = true;
+		int[][] grille = this.getGrille();
+		int ligne = numLigne;
+
+		for (int j = 0; j < Grille.LARGEUR_GRILLE; j++) {
+			if (grille[ligne][j] == 0)
+				supprLigne = false;
 		}
-		
-		
-		if(supprLigne) this.scoreLigne(ligne-1);
-		
+
+		if (supprLigne) {
+			this.scoreLigne(ligne - 1);
+			supprimerLigne(ligne);
+		}
+
 		return supprLigne;
+	}
+
+	public void supprimerLigne(int ligne) {
+		int l=ligne;
+		for(int j=0;j<Grille.LARGEUR_GRILLE;j++){
+			grille[l][j]=0;
+		}
+		for(int i=l-1; i>0;i--){
+			for(int j=0;j<Grille.LARGEUR_GRILLE;j++){
+				grille[l][j]=grille[i][j];
+			}
+		}
 	}
 }
