@@ -1,6 +1,6 @@
 /**
  * @author Herve
- *
+ * 
  */
 public class Grille {
 
@@ -10,8 +10,8 @@ public class Grille {
 	public static final int LIG_APPARITION = 0;
 
 	private int[][] grille;
-	private Piece pieceCourante = new Piece(); // pièce courante
-	private Piece pieceSuivante = new Piece(); // pièce suivante
+	private Piece pieceCourante = new Piece(nouvellePiece()); // pièce courante
+	private Piece pieceSuivante = new Piece(nouvellePiece()); // pièce suivante
 
 	public Grille() {
 		grille = new int[HAUTEUR_GRILLE][LARGEUR_GRILLE];
@@ -70,15 +70,55 @@ public class Grille {
 	}
 
 	public boolean bloqueDroite() {
-		boolean b = false;
-		// A CODER
-		return b;
+		int i = pieceCourante.getLig();
+		int j = pieceCourante.getCol();
+		int[][] piece = new int[4][4];
+		piece = pieceCourante.recupererPiece();
+		boolean bloque = false;
+
+		for (int k = 0; k < 4; k++) {
+			for (int l = 0; l < 4; l++) {
+
+				if (piece[k][l] != 0) {
+					if (j + l + 1 < 10) {
+						if (grille[i + k][j + l + 1] != 0) {
+							bloque = true;
+						}
+
+					} else
+						bloque = true;
+
+				}
+			}
+		}
+
+		return bloque;
 
 	}
 
 	public boolean bloqueGauche() {
-		// A CODER
-		return false;
+		int i = pieceCourante.getLig();
+		int j = pieceCourante.getCol();
+		int[][] piece = new int[4][4];
+		piece = pieceCourante.recupererPiece();
+		boolean bloque = false;
+
+		for (int k = 0; k < 4; k++) {
+			for (int l = 0; l < 4; l++) {
+
+				if (piece[k][l] != 0) {
+					if (j + l - 1 >= 0) {
+						if (grille[i + k][j + l - 1] != 0) {
+							bloque = true;
+						}
+
+					} else
+						bloque = true;
+
+				}
+			}
+		}
+		return bloque;
 	}
 
 	public boolean bloqueBas() {
@@ -103,10 +143,69 @@ public class Grille {
 				}
 			}
 		}
-		// affichePiece();
 		return bloque;
 	}
 
+	public boolean bloqueRotation() {
+		int i = pieceCourante.getLig();
+		int j = pieceCourante.getCol();
+		int[][] piece = new int[4][4];
+		int sens = pieceCourante.getSens();
+		int sensProchain;
+		boolean bloque = false;
+
+		if (sens < 3)
+			sensProchain = sens + 1;
+		else
+			sensProchain = 0;
+
+		piece = pieceCourante.recupererPiece(sensProchain);
+
+		for (int k = 0; k < 4; k++) {
+			for (int l = 0; l < 4; l++) {
+
+				if (piece[k][l] != 0) {
+					if (grille[i + k][j + l] != 0) {
+						bloque = true;
+
+					}
+				}
+			}
+		}
+		return bloque;
+	}
+
+	/**
+	 * @return renvoie true si le déplacement n'a pas été effectué
+	 */
+	public boolean deplaceDroite() {
+		boolean finDeplacement = false;
+		effacePiece();
+
+		if (!bloqueDroite()) {
+			pieceCourante.setCol(pieceCourante.getCol() + 1);
+		} else
+			finDeplacement = true;
+
+		affichePiece();
+		return finDeplacement;
+	}
+
+	/**
+	 * @return renvoie true si le déplacement n'a pas été effectué
+	 */
+	public boolean deplaceGauche() {
+		boolean finDeplacement = false;
+		effacePiece();
+
+		if (!bloqueGauche()) {
+			pieceCourante.setCol(pieceCourante.getCol() - 1);
+		} else
+			finDeplacement = true;
+
+		affichePiece();
+		return finDeplacement;
+	}
 
 	/**
 	 * @return renvoie true si le déplacement n'a pas été effectué
@@ -122,6 +221,21 @@ public class Grille {
 
 		affichePiece();
 		return finDeplacement;
+	}
+
+	public boolean rotationPiece() {
+
+		boolean finRotation = false;
+
+		effacePiece();
+		if (!bloqueRotation()) {
+			pieceCourante.tournerPiece();
+		} else {
+			finRotation = true;
+		}
+
+		affichePiece();
+		return finRotation;
 	}
 
 	public Piece getPieceCourante() {
@@ -153,21 +267,21 @@ public class Grille {
 	public void setPieceSuivante(Piece pieceSuivante) {
 		this.pieceSuivante = pieceSuivante;
 	}
-	
-	public boolean nouvellePiecePossible(Piece p){
-		boolean npPossible=true;
-		int[][] piece=p.recupererPiece();
-		int[][] grille=this.getGrille();
-		
-				
-		for(int i=0;i<4;i++){
-			for(int j=0;j<4;j++){
-				if (piece[i][j]!=0){
-					if(grille[i+Grille.LIG_APPARITION][j+COL_APPARITION]!=0) npPossible=false;
+
+	public boolean nouvellePiecePossible(Piece p) {
+		boolean npPossible = true;
+		int[][] piece = p.recupererPiece();
+		int[][] grille = this.getGrille();
+
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				if (piece[i][j] != 0) {
+					if (grille[i + Grille.LIG_APPARITION][j + COL_APPARITION] != 0)
+						npPossible = false;
 				}
 			}
 		}
-	
+
 		return npPossible;
 	}
 

@@ -1,7 +1,5 @@
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-public class Jeu extends Thread implements KeyListener {
+public class Jeu implements Runnable {
 
 	private int score, niveau, lignes;
 	private boolean finJeu;
@@ -13,7 +11,6 @@ public class Jeu extends Thread implements KeyListener {
 		niveau = 0;
 		finJeu = false;
 		g = new Grille();
-		this.start();
 	}
 
 	public void nouveauTour(Grille g) {
@@ -26,6 +23,7 @@ public class Jeu extends Thread implements KeyListener {
 	public void descentePiece(Grille g) {
 		boolean finDeplacement = false;
 		finDeplacement = (g.deplaceBas());
+		g.rotationPiece();
 
 		if (finDeplacement)
 			if (g.nouvellePiecePossible(g.getPieceSuivante())) {
@@ -62,35 +60,17 @@ public class Jeu extends Thread implements KeyListener {
 	}
 
 	public void run() {
-		while ((Thread.currentThread() == this) && (!this.isInterrupted())
-				&& (!finJeu)) {
+		while (!finJeu) {
 			descentePiece(g);
 			try {
-				Thread.sleep(20 - (niveau * 150));
+				Thread.sleep(1000 - (niveau * 150));
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				break;
 			}
 		}
 		System.out.println("Game over");
-		Thread.currentThread().interrupt();
 	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	
+	
 }

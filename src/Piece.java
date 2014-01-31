@@ -47,6 +47,19 @@ public class Piece {
 		return resultat;
 	}
 
+	public int[][] recupererPiece(int sens) {
+		int type;
+		int[][] resultat = new int[4][4];
+		type = this.getType();
+		
+		for (int k = 0; k < FabriquePiece.PIECES[type][sens].length; k++) {
+			for (int l = 0; l < FabriquePiece.PIECES[type][sens][0].length; l++) {
+				resultat[k][l] = FabriquePiece.PIECES[type][sens][k][l];
+			}
+		}
+		return resultat;
+	}
+	
 	public int getType() {
 		return type;
 	}
@@ -92,9 +105,9 @@ public class Piece {
 	public void tournerPiece() {
 
 		if (sens < 3)
-			sens++;
+			this.setSens(this.getSens()+1);
 		else
-			sens = 0;
+			this.setSens(0);
 	}
 
 	public Piece copiePiece(Piece p) {
