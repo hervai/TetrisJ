@@ -10,11 +10,19 @@ public class Grille {
 	public static final int LIG_APPARITION = 0;
 
 	private int[][] grille;
-	private Piece pieceCourante = new Piece(nouvellePiece()); // pièce courante
-	private Piece pieceSuivante = new Piece(nouvellePiece()); // pièce suivante
+	private Piece pieceCourante; // pièce courante
+	private Piece pieceSuivante; // pièce suivante
+	private int score, niveau, nouvellesLignes;
 
 	public Grille() {
+		pieceSuivante = new Piece(nouvellePiece());
+		pieceCourante = new Piece(nouvellePiece());
+
 		grille = new int[HAUTEUR_GRILLE][LARGEUR_GRILLE];
+		score = 0;
+		nouvellesLignes = 0;
+		niveau = 0;
+		this.affichePiece();
 	}
 
 	public void setGrille(int[][] g) {
@@ -218,9 +226,9 @@ public class Grille {
 			pieceCourante.setLig(pieceCourante.getLig() + 1);
 		} else {
 			finDeplacement = true;
-			scoreLigne(Grille.HAUTEUR_GRILLE);
+			if (lignePleine(Grille.HAUTEUR_GRILLE - 1))
+				majScore();
 		}
-
 		affichePiece();
 
 		return finDeplacement;
@@ -247,6 +255,8 @@ public class Grille {
 
 	public void setPieceCourante(Piece pieceCourante) {
 		this.pieceCourante = pieceCourante;
+		this.affichePiece();
+
 	}
 
 	public void dessinerGrille() {
@@ -288,7 +298,7 @@ public class Grille {
 		return npPossible;
 	}
 
-	public boolean scoreLigne(int numLigne) {
+	public boolean lignePleine(int numLigne) {
 		boolean supprLigne = true;
 		int[][] grille = this.getGrille();
 		int ligne = numLigne;
@@ -299,22 +309,77 @@ public class Grille {
 		}
 
 		if (supprLigne) {
-			this.scoreLigne(ligne - 1);
-			supprimerLigne(ligne);
+			this.lignePleine(ligne - 1);
+			if (ligne > 0)
+				supprimerLigne(ligne);
 		}
 
 		return supprLigne;
 	}
 
 	public void supprimerLigne(int ligne) {
-		int l=ligne;
-		for(int j=0;j<Grille.LARGEUR_GRILLE;j++){
-			grille[l][j]=0;
+		int l = ligne;
+
+		for (int j = 0; j < Grille.LARGEUR_GRILLE; j++) {
+			grille[l][j] = 0;
 		}
-		for(int i=l-1; i>0;i--){
-			for(int j=0;j<Grille.LARGEUR_GRILLE;j++){
-				grille[l][j]=grille[i][j];
+
+		for (int i = l - 1; i > 0; i--) {
+			for (int j = 0; j < Grille.LARGEUR_GRILLE; j++) {
+				grille[l][j] = grille[i][j];
 			}
+
 		}
+	}
+
+	public void majScore() {
+		score += nouvellesLignes;
+		if (score > 110) {
+			niveau = 10;
+		} else if (score > 100) {
+			niveau = 9;
+		} else if (score > 90) {
+			niveau = 8;
+		}
+
+		else if (score > 80) {
+			niveau = 7;
+		} else if (score > 70) {
+			niveau = 6;
+		} else if (score > 50) {
+			niveau = 5;
+		} else if (score > 40) {
+			niveau = 4;
+		} else if (score > 30) {
+			niveau = 3;
+		} else if (score > 20) {
+			niveau = 2;
+		} else if (score > 10) {
+			niveau = 1;
+		}
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public int getNiveau() {
+		return niveau;
+	}
+
+	public void setNiveau(int niveau) {
+		this.niveau = niveau;
+	}
+
+	public int getNouvellesLignes() {
+		return nouvellesLignes;
+	}
+
+	public void setNouvellesLignes(int nouvellesLignes) {
+		this.nouvellesLignes = nouvellesLignes;
 	}
 }

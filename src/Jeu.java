@@ -1,13 +1,11 @@
 public class Jeu implements Runnable {
 
-	private int score, niveau, lignes;
+
 	private boolean finJeu;
 	private Grille g;
 
 	public Jeu() {
-		score = 0;
-		lignes = 0;
-		niveau = 0;
+
 		finJeu = false;
 		g = new Grille();
 	}
@@ -22,7 +20,7 @@ public class Jeu implements Runnable {
 	public void descentePiece(Grille g) {
 		boolean finDeplacement = false;
 		finDeplacement = (g.deplaceBas());
-		g.rotationPiece();
+		//g.rotationPiece();
 
 		if (finDeplacement)
 			if (g.nouvellePiecePossible(g.getPieceSuivante())) {
@@ -63,7 +61,7 @@ public class Jeu implements Runnable {
 		while (!finJeu) {
 			descentePiece(g);
 			try {
-				Thread.sleep(100 - (niveau * 150));
+				Thread.sleep(1500 - (g.getNiveau() * 100));
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				break;
