@@ -4,6 +4,7 @@ public class Prg {
 		Thread t = new Thread(new Jeu());
 		t.start();
 		System.out.println("Game over MAIN");
+		
 	}
 
 }
