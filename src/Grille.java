@@ -155,7 +155,20 @@ public class Grille {
 	}
 	
 	public boolean nouvellePiecePossible(Piece p){
+		boolean npPossible=true;
+		int[][] piece=p.recupererPiece();
+		int[][] grille=this.getGrille();
 		
+				
+		for(int i=0;i<4;i++){
+			for(int j=0;j<4;j++){
+				if (piece[i][j]!=0){
+					if(grille[i+Grille.LIG_APPARITION][j+COL_APPARITION]!=0) npPossible=false;
+				}
+			}
+		}
+	
+		return npPossible;
 	}
 
 }

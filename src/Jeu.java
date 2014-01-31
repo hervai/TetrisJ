@@ -14,7 +14,6 @@ public class Jeu extends Thread implements KeyListener {
 		finJeu = false;
 		g = new Grille();
 		this.start();
-
 	}
 
 	public void nouveauTour(Grille g) {
@@ -67,13 +66,14 @@ public class Jeu extends Thread implements KeyListener {
 				&& (!finJeu)) {
 			descentePiece(g);
 			try {
-				Thread.sleep(200 - (niveau * 150));
+				Thread.sleep(20 - (niveau * 150));
 			} catch (InterruptedException e) {
-				return;
+				Thread.currentThread().interrupt();
+				break;
 			}
-
 		}
-
+		System.out.println("Game over");
+		Thread.currentThread().interrupt();
 	}
 
 	@Override
