@@ -22,7 +22,9 @@ public class Grille {
 		score = 0;
 		nouvellesLignes = 0;
 		niveau = 0;
+		
 		this.affichePiece();
+		System.out.println("X : " +pieceCourante.getCol() + " Y : " +pieceCourante.getLig());
 	}
 
 	public void setGrille(int[][] g) {
@@ -65,7 +67,7 @@ public class Grille {
 		x = pieceCourante.getCol();
 		y = pieceCourante.getLig();
 		int[][] piece = pieceCourante.recupererPiece();
-
+		
 		for (int i = y; i < y + 4; i++) {
 			for (int j = x; j < x + 4; j++) {
 				if (i < 20) {
@@ -75,6 +77,7 @@ public class Grille {
 				}
 			}
 		}
+		
 	}
 
 	public boolean bloqueDroite() {

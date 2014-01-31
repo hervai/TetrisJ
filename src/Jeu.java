@@ -1,6 +1,5 @@
 public class Jeu implements Runnable {
 
-
 	private boolean finJeu;
 	private Grille g;
 
@@ -8,19 +7,13 @@ public class Jeu implements Runnable {
 
 		finJeu = false;
 		g = new Grille();
-	}
-
-	public void nouveauTour(Grille g) {
-		g.setPieceCourante(g.getPieceSuivante());
-		g.setPieceSuivante(g.nouvellePiece());
-		g.affichePiece();
-		g.dessinerGrille();
+		
 	}
 
 	public void descentePiece(Grille g) {
 		boolean finDeplacement = false;
 		finDeplacement = (g.deplaceBas());
-		//g.rotationPiece();
+		// g.rotationPiece();
 
 		if (finDeplacement)
 			if (g.nouvellePiecePossible(g.getPieceSuivante())) {
@@ -29,14 +22,6 @@ public class Jeu implements Runnable {
 			} else
 				setFinJeu(this.controleFinJeu(g));
 
-		g.dessinerGrille();
-	}
-
-	public void premierTour(Grille g) {
-		g.setPieceCourante(g.nouvellePiece());
-		g.setPieceSuivante(g.nouvellePiece());
-		System.out.println("");
-		g.affichePiece();
 		g.dessinerGrille();
 	}
 
@@ -58,14 +43,17 @@ public class Jeu implements Runnable {
 	}
 
 	public void run() {
+		g.dessinerGrille();
 		while (!finJeu) {
-			descentePiece(g);
+
 			try {
 				Thread.sleep(1500 - (g.getNiveau() * 100));
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				break;
 			}
+			descentePiece(g);
+			g.getPieceSuivante().dessinerPiece();
 		}
 		System.out.println("Game over");
 	}
