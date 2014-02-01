@@ -1,13 +1,20 @@
+package jeu;
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
+
 /**
  * @author Herve
  * 
  */
-public class Grille {
+
+public class Grille extends Observable {
 
 	public static final int LARGEUR_GRILLE = 10;
 	public static final int HAUTEUR_GRILLE = 20;
 	public static final int COL_APPARITION = 3;
 	public static final int LIG_APPARITION = 0;
+	private ArrayList<Observer> listObservateur = new ArrayList<Observer>();
 
 	private int[][] grille;
 	private Piece pieceCourante; // pièce courante
@@ -22,13 +29,15 @@ public class Grille {
 		score = 0;
 		nouvellesLignes = 0;
 		niveau = 0;
-		
+
 		this.affichePiece();
-		System.out.println("X : " +pieceCourante.getCol() + " Y : " +pieceCourante.getLig());
+		System.out.println("X : " + pieceCourante.getCol() + " Y : "
+				+ pieceCourante.getLig());
 	}
 
 	public void setGrille(int[][] g) {
 		grille = g;
+
 	}
 
 	public int[][] getGrille() {
@@ -60,6 +69,9 @@ public class Grille {
 
 			}
 		}
+		setChanged();
+		notifyObservers();
+
 	}
 
 	public void affichePiece() {
@@ -67,7 +79,7 @@ public class Grille {
 		x = pieceCourante.getCol();
 		y = pieceCourante.getLig();
 		int[][] piece = pieceCourante.recupererPiece();
-		
+
 		for (int i = y; i < y + 4; i++) {
 			for (int j = x; j < x + 4; j++) {
 				if (i < 20) {
@@ -77,7 +89,10 @@ public class Grille {
 				}
 			}
 		}
-		
+		setChanged();
+		notifyObservers();
+
+
 	}
 
 	public boolean bloqueDroite() {
@@ -195,6 +210,9 @@ public class Grille {
 
 		if (!bloqueDroite()) {
 			pieceCourante.setCol(pieceCourante.getCol() + 1);
+			setChanged();
+			notifyObservers();
+
 		} else
 			finDeplacement = true;
 
@@ -211,6 +229,9 @@ public class Grille {
 
 		if (!bloqueGauche()) {
 			pieceCourante.setCol(pieceCourante.getCol() - 1);
+			setChanged();
+			notifyObservers();
+
 		} else
 			finDeplacement = true;
 
@@ -227,6 +248,9 @@ public class Grille {
 
 		if (!bloqueBas()) {
 			pieceCourante.setLig(pieceCourante.getLig() + 1);
+			setChanged();
+			notifyObservers();
+
 		} else {
 			finDeplacement = true;
 			if (lignePleine(Grille.HAUTEUR_GRILLE - 1))
@@ -244,6 +268,9 @@ public class Grille {
 		effacePiece();
 		if (!bloqueRotation()) {
 			pieceCourante.tournerPiece();
+			setChanged();
+			notifyObservers();
+
 		} else {
 			finRotation = true;
 		}
@@ -331,6 +358,8 @@ public class Grille {
 			for (int j = 0; j < Grille.LARGEUR_GRILLE; j++) {
 				grille[l][j] = grille[i][j];
 			}
+			setChanged();
+			notifyObservers();
 
 		}
 	}
@@ -360,6 +389,9 @@ public class Grille {
 		} else if (score > 10) {
 			niveau = 1;
 		}
+		setChanged();
+		notifyObservers();
+
 	}
 
 	public int getScore() {
@@ -384,5 +416,22 @@ public class Grille {
 
 	public void setNouvellesLignes(int nouvellesLignes) {
 		this.nouvellesLignes = nouvellesLignes;
+	}
+
+	// Ajoute un observateur à la liste
+	public void addObservateur(Observer obs) {
+		this.listObservateur.add(obs);
+	}
+
+	// Retire tous les observateurs de la liste
+	public void delObservateur() {
+		this.listObservateur = new ArrayList<Observer>();
+	}
+
+	// Avertit les observateurs que l'objet observable a changé
+	// et invoque la méthode update() de chaque observateur
+	public void updateObservateur() {
+		for (Observer obs : this.listObservateur)
+			obs.update(null, obs);
 	}
 }

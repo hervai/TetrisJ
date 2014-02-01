@@ -1,3 +1,4 @@
+package jeu;
 
 public class FabriquePiece {
 	/* Pièces du jeu */

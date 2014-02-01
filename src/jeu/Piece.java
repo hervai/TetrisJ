@@ -1,3 +1,4 @@
+package jeu;
 public class Piece {
 
 	// Propriétés d'une pièce

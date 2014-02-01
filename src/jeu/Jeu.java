@@ -1,3 +1,4 @@
+package jeu;
 public class Jeu implements Runnable {
 
 	private boolean finJeu;
@@ -43,6 +44,7 @@ public class Jeu implements Runnable {
 	}
 
 	public void run() {
+		System.out.println("****** START ******");
 		g.dessinerGrille();
 		while (!finJeu) {
 
@@ -58,4 +60,11 @@ public class Jeu implements Runnable {
 		System.out.println("Game over");
 	}
 
+	public Grille getGrille(){
+		return g;
+		
+	}
+	public void setGrille(Grille g){
+		this.g=g;
+	}
 }
