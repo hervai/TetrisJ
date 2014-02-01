@@ -3,7 +3,7 @@ public class Jeu implements Runnable {
 
 	private boolean finJeu;
 	private Grille g;
-
+	public static final int VITESSE_DEFAUT=500;
 	public Jeu() {
 
 		finJeu = false;
@@ -23,7 +23,7 @@ public class Jeu implements Runnable {
 			} else
 				setFinJeu(this.controleFinJeu(g));
 
-		g.dessinerGrille();
+		//g.dessinerGrille();
 	}
 
 	public boolean controleFinJeu(Grille g) {
@@ -45,17 +45,17 @@ public class Jeu implements Runnable {
 
 	public void run() {
 		System.out.println("****** START ******");
-		g.dessinerGrille();
+		//g.dessinerGrille();
 		while (!finJeu) {
 
 			try {
-				Thread.sleep(1500 - (g.getNiveau() * 100));
+				Thread.sleep(VITESSE_DEFAUT - (g.getNiveau() * 100));
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				break;
 			}
 			descentePiece(g);
-			g.getPieceSuivante().dessinerPiece();
+			//g.getPieceSuivante().dessinerPiece();
 		}
 		System.out.println("Game over");
 	}

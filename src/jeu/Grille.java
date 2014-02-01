@@ -1,4 +1,5 @@
 package jeu;
+
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -31,8 +32,7 @@ public class Grille extends Observable {
 		niveau = 0;
 
 		this.affichePiece();
-		System.out.println("X : " + pieceCourante.getCol() + " Y : "
-				+ pieceCourante.getLig());
+
 	}
 
 	public void setGrille(int[][] g) {
@@ -51,6 +51,7 @@ public class Grille extends Observable {
 		p.setCol(COL_APPARITION);
 		p.setLig(LIG_APPARITION);
 		return p;
+
 	}
 
 	public void effacePiece() {
@@ -91,7 +92,6 @@ public class Grille extends Observable {
 		}
 		setChanged();
 		notifyObservers();
-
 
 	}
 
@@ -309,6 +309,8 @@ public class Grille extends Observable {
 
 	public void setPieceSuivante(Piece pieceSuivante) {
 		this.pieceSuivante = pieceSuivante;
+		setChanged();
+		notifyObservers();
 	}
 
 	public boolean nouvellePiecePossible(Piece p) {
@@ -337,7 +339,8 @@ public class Grille extends Observable {
 			if (grille[ligne][j] == 0)
 				supprLigne = false;
 		}
-
+		if (ligne > 0)
+			this.lignePleine(ligne - 1);
 		if (supprLigne) {
 			this.lignePleine(ligne - 1);
 			if (ligne > 0)
