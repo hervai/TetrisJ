@@ -253,10 +253,10 @@ public class Grille extends Observable {
 
 		} else {
 			finDeplacement = true;
-			if (lignePleine(Grille.HAUTEUR_GRILLE - 1))
-				majScore();
+
 		}
 		affichePiece();
+		
 
 		return finDeplacement;
 	}
@@ -334,17 +334,19 @@ public class Grille extends Observable {
 		boolean supprLigne = true;
 		int[][] grille = this.getGrille();
 		int ligne = numLigne;
-
-		for (int j = 0; j < Grille.LARGEUR_GRILLE; j++) {
-			if (grille[ligne][j] == 0)
+		for (int l = 0; l < Grille.LARGEUR_GRILLE; l++) {
+			if (grille[ligne][l] == 0) {
 				supprLigne = false;
+			}
 		}
 		if (ligne > 0)
 			this.lignePleine(ligne - 1);
 		if (supprLigne) {
+			System.out.println("Ligne " + ligne + " à supprimer");
 			this.lignePleine(ligne - 1);
 			if (ligne > 0)
-				supprimerLigne(ligne);
+				System.out.println("Appel suppression ligne" + ligne);
+			supprimerLigne(ligne);
 		}
 
 		return supprLigne;
@@ -353,14 +355,15 @@ public class Grille extends Observable {
 	public void supprimerLigne(int ligne) {
 		int l = ligne;
 
-		for (int j = 0; j < Grille.LARGEUR_GRILLE; j++) {
+		/*for (int j = 0; j < Grille.LARGEUR_GRILLE; j++) {
 			grille[l][j] = 0;
-		}
+		}*/
 
 		for (int i = l - 1; i > 0; i--) {
 			for (int j = 0; j < Grille.LARGEUR_GRILLE; j++) {
 				grille[l][j] = grille[i][j];
 			}
+			System.out.println("Décalage ligne fini");
 			setChanged();
 			notifyObservers();
 

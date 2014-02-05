@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 import jeu.Grille;
 import jeu.Jeu;
 
-public class FenetreTetris extends JFrame implements KeyListener, Observer {
+public class FenetreTetris extends JFrame implements KeyListener {
 	private Jeu jeu;
 	private Thread t;
 	private Grille g;
@@ -27,22 +27,11 @@ public class FenetreTetris extends JFrame implements KeyListener, Observer {
 	public FenetreTetris() {
 		Thread t = new Thread(jeu = new Jeu());
 		this.g = jeu.getGrille();
-		g.addObservateur(this);
 		initFenetre();
 
 		// Début du jeu
 		t.start();
 		this.addKeyListener(this);
-	}
-
-	public void update() {
-
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -100,7 +89,7 @@ public class FenetreTetris extends JFrame implements KeyListener, Observer {
 
 		// Fenetre de jeu
 		this.setSize(Grille.LARGEUR_GRILLE * TAILLE_CARRE + 250,
-				Grille.HAUTEUR_GRILLE * TAILLE_CARRE);
+				(Grille.HAUTEUR_GRILLE+2) * TAILLE_CARRE);
 		this.setTitle("Tetris by hervai");
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

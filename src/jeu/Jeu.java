@@ -14,15 +14,18 @@ public class Jeu implements Runnable {
 	public void descentePiece(Grille g) {
 		boolean finDeplacement = false;
 		finDeplacement = (g.deplaceBas());
+	
 		// g.rotationPiece();
 
-		if (finDeplacement)
+		if (finDeplacement){
+			if (g.lignePleine(Grille.HAUTEUR_GRILLE - 1))
+				g.majScore();
 			if (g.nouvellePiecePossible(g.getPieceSuivante())) {
 				g.setPieceCourante(g.getPieceSuivante());
 				g.setPieceSuivante(g.nouvellePiece());
 			} else
 				setFinJeu(this.controleFinJeu(g));
-
+		}
 		//g.dessinerGrille();
 	}
 
