@@ -256,7 +256,6 @@ public class Grille extends Observable {
 
 		}
 		affichePiece();
-		
 
 		return finDeplacement;
 	}
@@ -342,6 +341,7 @@ public class Grille extends Observable {
 		if (ligne > 0)
 			this.lignePleine(ligne - 1);
 		if (supprLigne) {
+			nouvellesLignes++;
 			System.out.println("Ligne " + ligne + " à supprimer");
 			this.lignePleine(ligne - 1);
 			if (ligne > 0)
@@ -355,13 +355,13 @@ public class Grille extends Observable {
 	public void supprimerLigne(int ligne) {
 		int l = ligne;
 
-		/*for (int j = 0; j < Grille.LARGEUR_GRILLE; j++) {
-			grille[l][j] = 0;
-		}*/
+		/*
+		 * for (int j = 0; j < Grille.LARGEUR_GRILLE; j++) { grille[l][j] = 0; }
+		 */
 
 		for (int i = l - 1; i > 0; i--) {
 			for (int j = 0; j < Grille.LARGEUR_GRILLE; j++) {
-				grille[l][j] = grille[i][j];
+				grille[i+1][j] = grille[i][j];
 			}
 			System.out.println("Décalage ligne fini");
 			setChanged();
@@ -372,29 +372,8 @@ public class Grille extends Observable {
 
 	public void majScore() {
 		score += nouvellesLignes;
-		if (score > 110) {
-			niveau = 10;
-		} else if (score > 100) {
-			niveau = 9;
-		} else if (score > 90) {
-			niveau = 8;
-		}
+		niveau = score / 10;
 
-		else if (score > 80) {
-			niveau = 7;
-		} else if (score > 70) {
-			niveau = 6;
-		} else if (score > 50) {
-			niveau = 5;
-		} else if (score > 40) {
-			niveau = 4;
-		} else if (score > 30) {
-			niveau = 3;
-		} else if (score > 20) {
-			niveau = 2;
-		} else if (score > 10) {
-			niveau = 1;
-		}
 		setChanged();
 		notifyObservers();
 
@@ -424,20 +403,20 @@ public class Grille extends Observable {
 		this.nouvellesLignes = nouvellesLignes;
 	}
 
-	// Ajoute un observateur à la liste
+	/*// Ajoute un observateur à la liste
 	public void addObservateur(Observer obs) {
 		this.listObservateur.add(obs);
-	}
+	}*/
 
-	// Retire tous les observateurs de la liste
+	/*// Retire tous les observateurs de la liste
 	public void delObservateur() {
 		this.listObservateur = new ArrayList<Observer>();
-	}
+	}*/
 
-	// Avertit les observateurs que l'objet observable a changé
+	/*// Avertit les observateurs que l'objet observable a changé
 	// et invoque la méthode update() de chaque observateur
 	public void updateObservateur() {
 		for (Observer obs : this.listObservateur)
 			obs.update(null, obs);
-	}
+	}*/
 }
