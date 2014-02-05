@@ -45,7 +45,7 @@ public class VuePieceSuivante extends JPanel implements Observer {
 			Image carre5 = ImageIO.read(new File("img/carre5.jpg"));
 			Image carre6 = ImageIO.read(new File("img/carre6.jpg"));
 			Image carre7 = ImageIO.read(new File("img/carre7.jpg"));
-			
+
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 4; j++) {
 					valeurCase = grillePiece[i][j];

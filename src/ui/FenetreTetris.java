@@ -1,11 +1,13 @@
 package ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
@@ -98,15 +100,13 @@ public class FenetreTetris extends JFrame implements KeyListener {
 		setContentPane(new JPanel());
 		Container tableau = getContentPane();
 		tableau.setSize(this.getWidth(), this.getHeight());
-
-		// Dessin de la grille
+		tableau.setLayout(new BorderLayout());
+		
+		VueMenu vMenu=new VueMenu(jeu.getGrille());
 		VueGrille vGrille = new VueGrille(jeu.getGrille());
 
-		// Dessin de la pièce suivante
-		VuePieceSuivante vuePSuiv = new VuePieceSuivante(jeu.getGrille());
-
-		tableau.add(vGrille);
-		tableau.add(vuePSuiv);
-
+		
+		tableau.add(vGrille,BorderLayout.CENTER);
+		tableau.add(vMenu, BorderLayout.EAST);
 	}
 }
