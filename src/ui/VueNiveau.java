@@ -10,32 +10,33 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import jeu.Grille;
 import jeu.Piece;
 
-public class VueScore extends JLabel implements Observer {
+public class VueNiveau extends JLabel implements Observer {
 	private Grille g;
 	private int score;
 	private int niveau;
 	private int lignes;
 	
-	public VueScore(Grille g) {
+	public VueNiveau(Grille g) {
 		this.g = g;
 		g.addObserver(this);
 		score = g.getScore();
 		niveau=g.getNiveau();
 		lignes=g.getNouvellesLignes();
-		String scoreString="LEVEL\n    "+score +"\n" + "LINES\n    "+lignes;
+		String scoreString="LEVEL\n    "+score;
 		setText(scoreString);
 
 		setBackground(Color.green);
 	/*	setLocation(Grille.LARGEUR_GRILLE * FenetreTetris.TAILLE_CARRE + 20,
-				Grille.HAUTEUR_GRILLE * FenetreTetris.TAILLE_CARRE + 100);
+				Grille.HAUTEUR_GRILLE * FenetreTetris.TAILLE_CARRE + 100);*/
 		setPreferredSize(new Dimension(4 * FenetreTetris.TAILLE_CARRE,
-				4 * FenetreTetris.TAILLE_CARRE));*/
+				4 * FenetreTetris.TAILLE_CARRE));
 		
 	}
 
@@ -45,8 +46,9 @@ public class VueScore extends JLabel implements Observer {
 		score = g.getScore();
 		niveau=g.getNiveau();
 		lignes=g.getNouvellesLignes();
-		String scoreString="LEVEL\n    "+score +"\n" + "LINES\n    "+lignes;
+		String scoreString="LEVEL\n    "+score;
 		setText(scoreString);
+		
 		
 	}
 	

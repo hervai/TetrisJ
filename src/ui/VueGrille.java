@@ -23,8 +23,9 @@ public class VueGrille extends JPanel implements Observer {
 		this.g = g;
 		g.addObserver(this);
 		setBackground(Color.darkGray);
-		setPreferredSize(new Dimension(Grille.LARGEUR_GRILLE * FenetreTetris.TAILLE_CARRE,
-				Grille.HAUTEUR_GRILLE * FenetreTetris.TAILLE_CARRE));
+		//setPreferredSize(new Dimension(Grille.LARGEUR_GRILLE * FenetreTetris.TAILLE_CARRE,
+		//		Grille.HAUTEUR_GRILLE * FenetreTetris.TAILLE_CARRE));
+		setPreferredSize(new Dimension(403,802));
 	}
 
 
