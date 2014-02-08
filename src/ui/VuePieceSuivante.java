@@ -26,7 +26,7 @@ public class VuePieceSuivante extends JPanel implements Observer {
 		pieceSuivante = g.getPieceSuivante();
 		grillePiece = pieceSuivante.recupererPiece(pieceSuivante.getSens());
 
-		setBackground(Color.lightGray);
+		setBackground(new Color(0,0,0,0));
 		setLocation(Grille.LARGEUR_GRILLE * FenetreTetris.TAILLE_CARRE + 20,
 				Grille.HAUTEUR_GRILLE * FenetreTetris.TAILLE_CARRE + 20);
 		/*setPreferredSize(new Dimension(4 * FenetreTetris.TAILLE_CARRE,

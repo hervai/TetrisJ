@@ -44,6 +44,7 @@ public class VueLignes extends JPanel implements Observer {
 		jLignes = new JLabel("" + lignes);
 		jNiveau = new JLabel("" + niveau);
 
+		
 		this.add(jSScore);
 		this.add(jScore);
 		this.add(Box.createRigidArea(new Dimension(0, 20)));
@@ -53,7 +54,7 @@ public class VueLignes extends JPanel implements Observer {
 		this.add(jSLignes);
 		this.add(jLignes);
 		this.add(Box.createRigidArea(new Dimension(0, 20)));
-
+		this.setBackground(new Color(0,0,0,0));
 	}
 
 	@Override

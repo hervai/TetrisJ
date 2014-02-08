@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -27,7 +28,7 @@ public class VueMenu extends JPanel {
 	public VueMenu(Grille g) {
 		this.g = g;
 		// g.addObserver(this);
-
+		
 		setBackground(Color.lightGray);
 		setLocation(Grille.LARGEUR_GRILLE * FenetreTetris.TAILLE_CARRE + 20,
 				Grille.HAUTEUR_GRILLE * FenetreTetris.TAILLE_CARRE + 20);
