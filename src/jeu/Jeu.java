@@ -1,23 +1,27 @@
 package jeu;
+
 public class Jeu implements Runnable {
 
 	private boolean finJeu;
 	private Grille g;
-	public static final int VITESSE_DEFAUT=500;
+	private boolean pause;
+	public static final int VITESSE_DEFAUT = 500;
+
 	public Jeu() {
 
 		finJeu = false;
 		g = new Grille();
-		
+		pause = false;
+
 	}
 
 	public void descentePiece(Grille g) {
 		boolean finDeplacement = false;
 		finDeplacement = (g.deplaceBas());
-	
+
 		// g.rotationPiece();
 
-		if (finDeplacement){
+		if (finDeplacement) {
 			if (g.lignePleine(Grille.HAUTEUR_GRILLE - 1))
 				g.majScore();
 			if (g.nouvellePiecePossible(g.getPieceSuivante())) {
@@ -26,7 +30,7 @@ public class Jeu implements Runnable {
 			} else
 				setFinJeu(this.controleFinJeu(g));
 		}
-		//g.dessinerGrille();
+		// g.dessinerGrille();
 	}
 
 	public boolean controleFinJeu(Grille g) {
@@ -48,26 +52,33 @@ public class Jeu implements Runnable {
 
 	public void run() {
 		System.out.println("****** START ******");
-		//g.dessinerGrille();
-		while (!finJeu) {
 
-			try {
-				Thread.sleep(VITESSE_DEFAUT - (g.getNiveau() * 100));
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-				break;
+		while (!finJeu) {
+			if (!pause) {
+				try {
+					Thread.sleep(VITESSE_DEFAUT - (g.getNiveau() * 100));
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+					break;
+				}
+				descentePiece(g);
+				
 			}
-			descentePiece(g);
-			//g.getPieceSuivante().dessinerPiece();
 		}
 		System.out.println("Game over");
 	}
 
-	public Grille getGrille(){
+	public Grille getGrille() {
 		return g;
-		
+
 	}
-	public void setGrille(Grille g){
-		this.g=g;
+
+	public void setGrille(Grille g) {
+		this.g = g;
+	}
+
+	public void pause() {
+		pause = !pause;
+
 	}
 }

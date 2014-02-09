@@ -1,31 +1,19 @@
 package ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import java.awt.event.KeyListener;
-import java.io.File;
-import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
-
-import javax.swing.JFrame;
 
 import jeu.Grille;
 import jeu.Jeu;
@@ -34,23 +22,19 @@ public class FenetreTetris extends JFrame implements KeyListener {
 	private Jeu jeu;
 	private Thread t;
 	private Grille g;
-
-
+	
 	public static final int TAILLE_CARRE = 40;
-
 
 	public FenetreTetris() {
 		Thread t = new Thread(jeu = new Jeu());
 		this.g = jeu.getGrille();
-		
-		
 
-		
 		initFenetre();
 
-		// Début du jeu
-		t.start();
 		this.addKeyListener(this);
+
+		t.start();
+
 	}
 
 	@Override
@@ -59,31 +43,37 @@ public class FenetreTetris extends JFrame implements KeyListener {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
 			if (g.getPieceCourante() != null && (!jeu.getFinjeu())) {
-				System.out.println("Deplacement gauche");
+				
 				g.deplaceGauche();
 				repaint();
 			}
 			break;
 		case KeyEvent.VK_RIGHT:
 			if (g.getPieceCourante() != null && (!jeu.getFinjeu())) {
-				System.out.println("Deplacement droite");
+				
 				g.deplaceDroite();
 				repaint();
 			}
 			break;
 		case KeyEvent.VK_UP:
 			if (g.getPieceCourante() != null && (!jeu.getFinjeu())) {
-				System.out.println("Rotation");
+				
 				g.rotationPiece();
 				repaint();
 			}
 		case KeyEvent.VK_DOWN:
 			if (g.getPieceCourante() != null && (!jeu.getFinjeu())) {
-				System.out.println("Deplacement bas");
+				
 				g.deplaceBas();
 				repaint();
 			}
 			break;
+		case KeyEvent.VK_PAUSE:
+			if (g.getPieceCourante() != null && (!jeu.getFinjeu())) {
+				System.out.println("Pause");
+				jeu.pause();
+				repaint();
+			}
 		default:
 			repaint();
 		}
@@ -103,43 +93,29 @@ public class FenetreTetris extends JFrame implements KeyListener {
 	}
 
 	public void initFenetre() {
-		
-		this.getContentPane().setLayout(null);
 
-		// Fenetre de jeu
-		this.setSize(Grille.LARGEUR_GRILLE * TAILLE_CARRE + 280,
-				(Grille.HAUTEUR_GRILLE) * TAILLE_CARRE+28);
+		// this.getContentPane().setLayout(null);
+
+		// Fenêtre de jeu
+		this.setSize(Grille.LARGEUR_GRILLE * TAILLE_CARRE + 335,
+				(Grille.HAUTEUR_GRILLE) * TAILLE_CARRE + 30);
 		this.setTitle("Tetris");
 		this.setResizable(false);
 		this.setAlwaysOnTop(true);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+	    
+	    //Elements à ajouter
+	    VueGrille vg = new VueGrille(this.g, this.jeu);
+	   
+	    getContentPane().add(vg);
+	    
+	   System.out.println(this.getHeight() + " " + this.getWidth());
+	    
+	   
 		this.setVisible(true);
-		setLayout(new BorderLayout());
-		setContentPane(new JLabel(new ImageIcon("img\\background.jpg")));
-		//setLayout(new FlowLayout());
-
-		
-
-		
-
-		
-		//setContentPane(new JPanel());
-		
-		Container tableau = getContentPane();
-		tableau.setSize(this.getWidth(), this.getHeight());
-		tableau.setLayout(new BorderLayout());
-		JPanel videGauche = new JPanel();
-		videGauche.add(Box.createRigidArea(new Dimension(50, 0)));
-		VueMenu vMenu=new VueMenu(jeu.getGrille());
-		VueGrille vGrille = new VueGrille(jeu.getGrille());
-		videGauche.setOpaque(false);
-		tableau.add(videGauche,BorderLayout.WEST);
-		tableau.add(vGrille,BorderLayout.CENTER);
-		tableau.add(vMenu, BorderLayout.EAST);
-		repaint();
-		
 	}
-	
-	
+
+
 }
