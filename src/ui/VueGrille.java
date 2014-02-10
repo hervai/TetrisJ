@@ -21,6 +21,7 @@ public class VueGrille extends JPanel implements Observer {
 	private Grille g;
 	private Jeu j;
 	private Piece pieceSuivante;
+	private int indexFusee;
 	private int[][] grillePiece;
 	private static final int DECALAGE_GRILLE_X = 81;
 	private static final int DECALAGE_GRILLE_Y = 0;
@@ -32,8 +33,10 @@ public class VueGrille extends JPanel implements Observer {
 	public VueGrille(Grille g, Jeu j) {
 		this.g = g;
 		this.j = j;
+		indexFusee = j.getIndexFusee();
 		// this.setLayout(null);
 		g.addObserver(this);
+		j.addObserver(this);
 		Font f = new Font("Serif", Font.PLAIN, 32);
 
 		setPreferredSize(new Dimension(Grille.LARGEUR_GRILLE
@@ -57,8 +60,8 @@ public class VueGrille extends JPanel implements Observer {
 
 	public void paintComponent(Graphics gr) {
 		int valeurCase;
-		Image image, carre0, carre1, carre2, carre3, carre4, carre5, carre6, carre7, carrebc, gameover,fusee;
-
+		Image image, carre0, carre1, carre2, carre3, carre4, carre5, carre6, carre7, carrebc, gameover, pressstart;
+		Image[] fusee = new Image[9];
 		// Background
 		try {
 			image = ImageIO.read(new File("img/background.jpg"));
@@ -86,143 +89,169 @@ public class VueGrille extends JPanel implements Observer {
 			carre7 = ImageIO.read(new File("img/carre7.jpg"));
 			carrebc = ImageIO.read(new File("img/carreblanc.jpg"));
 			gameover = ImageIO.read(new File("img/gameover.jpg"));
-			fusee = ImageIO.read(new File("img/fusee.jpg"));
-			
-			if (!j.getFinjeu()) {
-				for (int i = 0; i < Grille.HAUTEUR_GRILLE; i++) {
-					for (int j = 0; j < Grille.LARGEUR_GRILLE; j++) {
-						valeurCase = this.g.getGrille()[i][j];
+			fusee[0] = ImageIO.read(new File("img/fusee0.jpg"));
+			fusee[1] = ImageIO.read(new File("img/fusee1.jpg"));
+			fusee[2] = ImageIO.read(new File("img/fusee2.jpg"));
+			fusee[3] = ImageIO.read(new File("img/fusee3.jpg"));
+			fusee[4] = ImageIO.read(new File("img/fusee4.jpg"));
+			fusee[5] = ImageIO.read(new File("img/fusee5.jpg"));
+			fusee[6] = ImageIO.read(new File("img/fusee6.jpg"));
+			fusee[7] = ImageIO.read(new File("img/fusee7.jpg"));
+			fusee[8] = ImageIO.read(new File("img/fusee8.jpg"));
+			pressstart = ImageIO.read(new File("img/pressstart.jpg"));
+
+			if (!j.getDebutjeu()) {
+				gr.drawImage(pressstart, DECALAGE_GRILLE_X, 0, this);
+			}
+
+			else {
+
+				if (!j.getFinjeu()) {
+					for (int i = 0; i < Grille.HAUTEUR_GRILLE; i++) {
+						for (int j = 0; j < Grille.LARGEUR_GRILLE; j++) {
+							valeurCase = this.g.getGrille()[i][j];
+							switch (valeurCase) {
+							case 0:
+								gr.drawImage(carre0, j
+										* FenetreTetris.TAILLE_CARRE
+										+ DECALAGE_GRILLE_X, i
+										* FenetreTetris.TAILLE_CARRE, this);
+								break;
+							case 1:
+								gr.drawImage(carre1, j
+										* FenetreTetris.TAILLE_CARRE
+										+ DECALAGE_GRILLE_X, i
+										* FenetreTetris.TAILLE_CARRE, this);
+								break;
+							case 2:
+								gr.drawImage(carre2, j
+										* FenetreTetris.TAILLE_CARRE
+										+ DECALAGE_GRILLE_X, i
+										* FenetreTetris.TAILLE_CARRE, this);
+								break;
+							case 3:
+								gr.drawImage(carre3, j
+										* FenetreTetris.TAILLE_CARRE
+										+ DECALAGE_GRILLE_X, i
+										* FenetreTetris.TAILLE_CARRE, this);
+								break;
+							case 4:
+								gr.drawImage(carre4, j
+										* FenetreTetris.TAILLE_CARRE
+										+ DECALAGE_GRILLE_X, i
+										* FenetreTetris.TAILLE_CARRE, this);
+								break;
+							case 5:
+								gr.drawImage(carre5, j
+										* FenetreTetris.TAILLE_CARRE
+										+ DECALAGE_GRILLE_X, i
+										* FenetreTetris.TAILLE_CARRE, this);
+								break;
+							case 6:
+								gr.drawImage(carre6, j
+										* FenetreTetris.TAILLE_CARRE
+										+ DECALAGE_GRILLE_X, i
+										* FenetreTetris.TAILLE_CARRE, this);
+								break;
+							case 7:
+								gr.drawImage(carre7, j
+										* FenetreTetris.TAILLE_CARRE
+										+ DECALAGE_GRILLE_X, i
+										* FenetreTetris.TAILLE_CARRE, this);
+								break;
+							default:
+								gr.drawImage(carre0, j
+										* FenetreTetris.TAILLE_CARRE
+										+ DECALAGE_GRILLE_X, i
+										* FenetreTetris.TAILLE_CARRE, this);
+								break;
+							}
+						}
+					}
+				} else {
+					if (!g.victoire()) {
+						// YOU DIED
+						gr.drawImage(gameover, DECALAGE_GRILLE_X, 0, this);
+					} else {
+						// DECOLAGE FUSEE
+						gr.drawImage(fusee[indexFusee], DECALAGE_GRILLE_X, 0,
+								this);
+					}
+				}
+
+				// Dessin pièce suivante
+				for (int i = 0; i < 4; i++) {
+					for (int j = 0; j < 4; j++) {
+
+						valeurCase = grillePiece[i][j];
+
 						switch (valeurCase) {
 						case 0:
-							gr.drawImage(carre0, j * FenetreTetris.TAILLE_CARRE
-									+ DECALAGE_GRILLE_X, i
-									* FenetreTetris.TAILLE_CARRE, this);
+							gr.drawImage(carrebc, j
+									* FenetreTetris.TAILLE_CARRE
+									+ DECALAGE_PIECES_SUIV_X, i
+									* FenetreTetris.TAILLE_CARRE
+									+ DECALAGE_PIECES_SUIV_Y, this);
 							break;
 						case 1:
 							gr.drawImage(carre1, j * FenetreTetris.TAILLE_CARRE
-									+ DECALAGE_GRILLE_X, i
-									* FenetreTetris.TAILLE_CARRE, this);
+									+ DECALAGE_PIECES_SUIV_X, i
+									* FenetreTetris.TAILLE_CARRE
+									+ DECALAGE_PIECES_SUIV_Y, this);
 							break;
 						case 2:
 							gr.drawImage(carre2, j * FenetreTetris.TAILLE_CARRE
-									+ DECALAGE_GRILLE_X, i
-									* FenetreTetris.TAILLE_CARRE, this);
+									+ DECALAGE_PIECES_SUIV_X, i
+									* FenetreTetris.TAILLE_CARRE
+									+ DECALAGE_PIECES_SUIV_Y, this);
 							break;
 						case 3:
 							gr.drawImage(carre3, j * FenetreTetris.TAILLE_CARRE
-									+ DECALAGE_GRILLE_X, i
-									* FenetreTetris.TAILLE_CARRE, this);
+									+ DECALAGE_PIECES_SUIV_X, i
+									* FenetreTetris.TAILLE_CARRE
+									+ DECALAGE_PIECES_SUIV_Y, this);
 							break;
 						case 4:
 							gr.drawImage(carre4, j * FenetreTetris.TAILLE_CARRE
-									+ DECALAGE_GRILLE_X, i
-									* FenetreTetris.TAILLE_CARRE, this);
+									+ DECALAGE_PIECES_SUIV_X, i
+									* FenetreTetris.TAILLE_CARRE
+									+ DECALAGE_PIECES_SUIV_Y, this);
 							break;
 						case 5:
 							gr.drawImage(carre5, j * FenetreTetris.TAILLE_CARRE
-									+ DECALAGE_GRILLE_X, i
-									* FenetreTetris.TAILLE_CARRE, this);
+									+ DECALAGE_PIECES_SUIV_X, i
+									* FenetreTetris.TAILLE_CARRE
+									+ DECALAGE_PIECES_SUIV_Y, this);
 							break;
 						case 6:
 							gr.drawImage(carre6, j * FenetreTetris.TAILLE_CARRE
-									+ DECALAGE_GRILLE_X, i
-									* FenetreTetris.TAILLE_CARRE, this);
+									+ DECALAGE_PIECES_SUIV_X, i
+									* FenetreTetris.TAILLE_CARRE
+									+ DECALAGE_PIECES_SUIV_Y, this);
 							break;
 						case 7:
 							gr.drawImage(carre7, j * FenetreTetris.TAILLE_CARRE
-									+ DECALAGE_GRILLE_X, i
-									* FenetreTetris.TAILLE_CARRE, this);
+									+ DECALAGE_PIECES_SUIV_X, i
+									* FenetreTetris.TAILLE_CARRE
+									+ DECALAGE_PIECES_SUIV_Y, this);
 							break;
 						default:
-							gr.drawImage(carre0, j * FenetreTetris.TAILLE_CARRE
-									+ DECALAGE_GRILLE_X, i
-									* FenetreTetris.TAILLE_CARRE, this);
+							gr.drawImage(carrebc, j
+									* FenetreTetris.TAILLE_CARRE
+									+ DECALAGE_PIECES_SUIV_X, i
+									* FenetreTetris.TAILLE_CARRE
+									+ DECALAGE_PIECES_SUIV_Y, this);
 							break;
 						}
 					}
 				}
-			} else {
-				if(!g.victoire()){
-					//YOU DIED
-				gr.drawImage(gameover, DECALAGE_GRILLE_X, 0, this);
-				}
-				else
-				{
-					//DECOLAGE FUSEE
-					gr.drawImage(fusee, DECALAGE_GRILLE_X, 0, this);
-				}
+				// Fin dessin pièce suivante
 			}
-
-			// Dessin pièce suivante
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < 4; j++) {
-
-					valeurCase = grillePiece[i][j];
-
-					switch (valeurCase) {
-					case 0:
-						gr.drawImage(carrebc, j * FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_X, i
-								* FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_Y, this);
-						break;
-					case 1:
-						gr.drawImage(carre1, j * FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_X, i
-								* FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_Y, this);
-						break;
-					case 2:
-						gr.drawImage(carre2, j * FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_X, i
-								* FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_Y, this);
-						break;
-					case 3:
-						gr.drawImage(carre3, j * FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_X, i
-								* FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_Y, this);
-						break;
-					case 4:
-						gr.drawImage(carre4, j * FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_X, i
-								* FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_Y, this);
-						break;
-					case 5:
-						gr.drawImage(carre5, j * FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_X, i
-								* FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_Y, this);
-						break;
-					case 6:
-						gr.drawImage(carre6, j * FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_X, i
-								* FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_Y, this);
-						break;
-					case 7:
-						gr.drawImage(carre7, j * FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_X, i
-								* FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_Y, this);
-						break;
-					default:
-						gr.drawImage(carrebc, j * FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_X, i
-								* FenetreTetris.TAILLE_CARRE
-								+ DECALAGE_PIECES_SUIV_Y, this);
-						break;
-					}
-				}
-			}
-			// Fin dessin pièce suivante
-
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 
 	@Override
@@ -232,6 +261,7 @@ public class VueGrille extends JPanel implements Observer {
 		score = g.getScore();
 		niveau = g.getNiveau();
 		lignes = g.getNouvellesLignes();
+		indexFusee = j.getIndexFusee();
 		jscore.setText("<html>" + score + "<br><br><br>" + niveau
 				+ "<br><br><br>" + lignes + "</html>");
 		repaint();

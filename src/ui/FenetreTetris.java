@@ -1,22 +1,25 @@
 package ui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.Box;
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+
+import java.io.File;
+import java.net.MalformedURLException;
 
 import jeu.Grille;
 import jeu.Jeu;
+import jeu.Son;
+
+import javax.media.Format;
+import javax.media.Manager;
+import javax.media.MediaLocator;
+import javax.media.Player;
+import javax.media.PlugInManager;
+import javax.media.format.AudioFormat;
+import javax.swing.JFrame;
+
+
 
 public class FenetreTetris extends JFrame implements KeyListener {
 	private Jeu jeu;
@@ -32,9 +35,9 @@ public class FenetreTetris extends JFrame implements KeyListener {
 		initFenetre();
 
 		this.addKeyListener(this);
-
+		
 		t.start();
-
+		
 	}
 
 	@Override
@@ -72,6 +75,14 @@ public class FenetreTetris extends JFrame implements KeyListener {
 			if (g.getPieceCourante() != null && (!jeu.getFinjeu())) {
 				System.out.println("Pause");
 				jeu.pause();
+				repaint();
+			}
+			
+		case KeyEvent.VK_ENTER:
+			if (g.getPieceCourante() != null && (!jeu.getFinjeu())) {
+				System.out.println("Start");
+				jeu.setDebutJeu(true);
+				System.out.println(jeu.getDebutjeu());
 				repaint();
 			}
 		default:

@@ -15,6 +15,7 @@ public class Grille extends Observable {
 	public static final int HAUTEUR_GRILLE = 20;
 	public static final int COL_APPARITION = 3;
 	public static final int LIG_APPARITION = 0;
+	public static final int SCORE_VICTOIRE=3;
 	private ArrayList<Observer> listObservateur = new ArrayList<Observer>();
 
 	private int[][] grille;
@@ -403,6 +404,6 @@ public class Grille extends Observable {
 	}
 
 	public boolean victoire(){
-		return(score>100);
+		return(score>=SCORE_VICTOIRE);
 	}
 }
